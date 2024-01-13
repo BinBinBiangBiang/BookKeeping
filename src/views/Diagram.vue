@@ -1,10 +1,11 @@
 <template>
   <div>
-    Diagram
+    <choose-time/>
   </div>
 </template>
 
 <script lang="ts" setup>
+import ChooseTime from '@/components/ChooseTime.vue'
 
 </script>
 

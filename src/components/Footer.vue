@@ -68,12 +68,12 @@ const toMy = () => {
       // cursor: pointer;
       i{
         font-size: 1rem;  
-        display: inline-block;
+        // display: inline-block;
         margin-bottom: 0.1rem;
       }
       .footer-item-text{
         font-size: 0.6rem;
-        display: inline-block;
+        // display: inline-block;
       }
     }
   }
