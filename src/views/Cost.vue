@@ -7,13 +7,19 @@
           <p class="header-title-text">冰冰记账</p>
         </div>
         <div class="header-data">
-          <div class="header-data-time">
-            
+          <div class="header-data-time" @click="changeMonth">
+            <div><span class="header-data-time-year">{{state.year}}年</span></div>
+            <div><span class="header-data-time-month">{{state.month}}<i class="month">月</i><van-icon name="arrow-down" /></span></div>
           </div>
+          <span class="fuhao">|</span>
           <div class="header-data-make">
-            收入
+            <span class="header-data-make-title">收入</span>
+            <span class="header-data-make-value">0.00</span>
           </div>
-          <div class="header-data-cost">花费</div>
+          <div class="header-data-cost">
+            <span class="header-data-cost-title">支出</span>
+            <span class="header-data-cost-value">0.00</span>
+          </div>
         </div>
         <div class="tabs">
           <div class="tabs-item">
@@ -40,20 +46,31 @@
         </van-list>
       </div>
     </div>
+    <div v-if="state.showChooseTime">
+      <ChooseTime ref="childRef" @date-selected="handleDateSelected"/>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import { reactive } from 'vue'
+import { reactive,ref } from 'vue'
+import ChooseTime from '@/components/ChooseTime.vue'
 
 const router = useRouter()
+
+interface DateSelection {
+  year: string;
+  month: string;
+}
 
 // const list = ref([]);
 const state = reactive({
   loading: false,
   finished: false,
-  show: false,
+  year:2023,
+  month:12,
+  showChooseTime:true
 })
 
 const list = [
@@ -76,8 +93,13 @@ const list = [
   
 // }
 
-const showBottom = () => {
-  state.show = true;
+const selectedDate = ref({ year: '', month: '' });
+
+const handleDateSelected = (date:DateSelection):void => {
+  selectedDate.value = { ...date };
+  state.year = Number(selectedDate.value.year);
+  state.month = Number(selectedDate.value.month);
+  // 更新其他需要的显示
 };
 
 const onLoad = () => {
@@ -106,26 +128,86 @@ const onLoad = () => {
 const goChat = () => {
   router.push('/chat')
 }
+
+const childRef = ref<any>();
+
+const changeMonth = () =>{
+  state.showChooseTime = true;
+  childRef.value.show = true;
+  childRef.value.showBottom = true;
+}
 </script>
 
 <style lang="less" scoped>
 .container {
   height: 100vh;
-
   .main {
     height: 100%;
     overflow: auto;
 
     .header {
-      height: 6rem;
+      height: 7rem;
       position: fixed;
       top: 0;
       background: rgb(154, 243, 65);
 
       .header-data {
         display: flex;
-        justify-content: space-around;
         padding-bottom: 0.3rem;
+        align-items: center;
+        .header-data-time{
+          margin-left: 0.5rem;
+          margin-right: 0.5rem;
+          width: 2.5rem;
+          .header-data-time-year{
+            font-size: 0.5rem;
+            color: #736868;
+            padding-bottom: 0.2rem;
+          }
+          .header-data-time-month{
+            font-size: 0.9rem;
+            color: #131111;
+            padding-bottom: 0.2rem;
+            .month{
+              font-size: 0.5rem;
+            }
+          }
+        }
+        .fuhao{
+          color: #736868;
+          margin-top: 0.5rem;
+        }
+        .header-data-make{
+          margin-left: 0.6rem;
+          display: flex;
+          flex-direction: column;
+          .header-data-make-title{
+            font-size: 0.5rem;
+            color: #736868;
+            margin-top: 0.4rem;
+            padding-bottom: 0.2rem;
+          }
+          .header-data-make-value{
+            font-size: 0.8rem;
+            color: #131111;
+          }
+        }
+        .header-data-cost{
+          margin-left: 0.6rem;
+          display: flex;
+          flex-direction: column;
+          margin-left: 4rem;
+          .header-data-cost-title{
+            font-size: 0.5rem;
+            color: #736868;
+            margin-top: 0.4rem;
+            padding-bottom: 0.2rem;
+          }
+          .header-data-cost-value{
+            font-size: 0.8rem;
+            color: #131111;
+          }
+        }
       }
 
       .header-title {
@@ -188,7 +270,7 @@ const goChat = () => {
     .content {
       height: 100%;
       overflow: hidden;
-      padding-top: 6rem;
+      padding-top: 7rem;
     }
   }
 }
