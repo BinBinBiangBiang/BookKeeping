@@ -1,6 +1,6 @@
 <template>
   <div>
-    智能助手
+
   </div>
 </template>
 
@@ -8,6 +8,6 @@
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 
 </style>
