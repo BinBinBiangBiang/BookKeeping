@@ -1,6 +1,6 @@
 <template>
   <div>
-    语音助手
+    Budget
   </div>
 </template>
 

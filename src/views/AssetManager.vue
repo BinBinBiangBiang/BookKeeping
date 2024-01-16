@@ -1,6 +1,6 @@
 <template>
   <div>
-    语音助手
+    Asset Manager
   </div>
 </template>
 

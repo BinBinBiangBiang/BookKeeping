@@ -22,19 +22,19 @@
           </div>
         </div>
         <div class="tabs">
-          <div class="tabs-item">
+          <div class="tabs-item" @click="onTabBill">
             <i class="iconfont icon-zhangdan"></i>
             <p>账单</p>
           </div>
-          <div class="tabs-item">
+          <div class="tabs-item" @click="onTabBudget">
             <i class="iconfont icon-yusuan"></i>
             <p>预算</p>
           </div>
-          <div class="tabs-item">
+          <div class="tabs-item" @click="onTabAsset">
             <i class="iconfont icon-zichanguanjia"></i>
             <p>资产管家</p>
           </div>
-          <div class="tabs-item">
+          <div class="tabs-item" @click="onTabRefund">
             <i class="iconfont icon-fanxian"></i>
             <p>购物返现</p>
           </div>
@@ -135,6 +135,23 @@ const changeMonth = () =>{
   state.showChooseTime = true;
   childRef.value.show = true;
   childRef.value.showBottom = true;
+}
+
+// tabs 四个地方的跳转
+const onTabBill = () => {
+  router.push('/cost/bill')
+}
+
+const onTabBudget = () => {
+  router.push('/cost/budget')
+}
+
+const onTabAsset = () => {
+  router.push('/cost/assetManager')
+}
+
+const onTabRefund = () => {
+  router.push('/cost/shoppingCashback')
 }
 </script>
 

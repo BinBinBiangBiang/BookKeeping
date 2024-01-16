@@ -6,7 +6,7 @@ import { createRouter,createWebHistory,RouteRecordRaw } from "vue-router"
 const routes:RouteRecordRaw[] =[
   {
     path:'/',
-    redirect:{name:'home'}
+    redirect:{name:'cost'}
   },
   {
     path:'/home',
@@ -56,6 +56,38 @@ const routes:RouteRecordRaw[] =[
     component: () => import('@/views/Chat.vue'),
     meta:{
       title:'智能助手'
+    }
+  },
+  {
+    path:'/cost/bill',
+    name:'bill',
+    component: () => import('@/views/Bill.vue'),
+    meta:{
+      title:'账单'
+    }
+  },
+  {
+    path:'/cost/budget',
+    name:'budget',
+    component: () => import('@/views/Budget.vue'),
+    meta:{
+      title:'预算'
+    }
+  },
+  {
+    path:'/cost/assetManager',
+    name:'assetsManager',
+    component: () => import('@/views/AssetManager.vue'),
+    meta:{
+      title:'资产管家'
+    }
+  },
+  {
+    path:'/cost/shoppingCashback',
+    name:'shoppingCashback',
+    component: () => import('@/views/ShoppingCashback.vue'),
+    meta:{
+      title:'购物返现'
     }
   },
   {

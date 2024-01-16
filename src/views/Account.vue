@@ -1,6 +1,6 @@
 <template>
-  <div>
-    记账
+  <div class="container">
+    
   </div>
 </template>
 
