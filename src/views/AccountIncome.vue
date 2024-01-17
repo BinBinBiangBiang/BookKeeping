@@ -1,9 +1,9 @@
 <template>
-  <div class="icon-cost">
-    <div class="icon-cost-list" v-for="(icon, index) in iconCostList.iconStore.iconCost" :key="icon.icon"
-       @click="onCost(index)">
+  <div class="icon-income">
+    <div class="icon-income-list " v-for="(icon, index) in iconIncomeList.iconStore.iconIncome" :key="icon.icon"
+       @click="onIncome(index)">
       <Iconfont :iconFontProps="icon.icon" :class="{ 'selected': selectedIndex === index }"/>
-      <span class="icon-cost-name">{{ icon.name }}</span>
+      <span class="icon-income-name">{{ icon.name }}</span>
     </div>
   </div>
 </template>
@@ -13,43 +13,43 @@ import Iconfont from '@/components/Iconfont.vue';
 import { useIconfontStore } from '@/store/iconfont'
 import { ref } from 'vue'
 
-const iconCostList = useIconfontStore()
+const iconIncomeList = useIconfontStore()
 // 将 selectedIndex 的类型设为 ref<number | null>，表示它可以是数字或空。这样在点击事件中，它的值可以被设置为 number 类型。
 const selectedIndex = ref<number | null>(null);
 
-const onCost = (index:number) => {
+const onIncome = (index:number) => {
   selectedIndex.value = index;
-  console.log(iconCostList.iconStore.iconCost[index].name);
-  
+  console.log(iconIncomeList.iconStore.iconIncome[index].name);
 }
 
 </script>
 
 <style lang="less" scoped>
-.icon-cost {
+.icon-income {
   margin-top: 2rem;
   height: 100vh;
   max-height: 100vh;
+  align-content: flex-start;
   overflow-y: auto;
   // 改善滚动的流畅性。
   -webkit-overflow-scrolling: touch;
   // width: 100vw;
   display: flex;
-  align-content: flex-start;
   padding-left: 0.7rem;
   padding-right: 0.7rem;
   flex-wrap: wrap;
-
-  .icon-cost-list {
+  overflow: auto;
+  .icon-income-list {
     margin: 0.2rem 0.5rem;
     width: 2.5rem;
     height: 3.8rem;
 
+    // 动态添加的类名
     .selected {
       background-color: yellow;
     }
 
-    .icon-cost-name {
+    .icon-income-name {
       display: inline-block;
       width: 100%;
       text-align: center;
@@ -59,4 +59,4 @@ const onCost = (index:number) => {
   }
 }
 
-// 动态添加的类名</style>
+</style>

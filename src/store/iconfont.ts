@@ -124,19 +124,50 @@ export const useIconfontStore = defineStore('iconfont',()=>{
         icon:'icon-kuaidi',
         name:'快递',
         type:'cost'
-      },
-      {
-        icon:'icon-qinyou',
-        name:'亲友',
-        type:'cost'
-      },
-      {
-        icon:'icon-kuaidi',
-        name:'快递',
-        type:'cost'
       }
     ],
-    iconIncome:[]
+    iconIncome:[
+      {
+        icon:'icon-gongzi',
+        name:'工资',
+        type:'income'
+      },
+      {
+        icon:'icon-jianzhi',
+        name:'兼职',
+        type:'income'
+      },
+      {
+        icon:'icon-licai',
+        name:'理财',
+        type:'income'
+      },
+      {
+        icon:'icon-tuijianlijin',
+        name:'礼金',
+        type:'income'
+      },
+      {
+        icon:'icon-juejin',
+        name:'掘金',
+        type:'income'
+      },
+      {
+        icon:'icon-a-waibao6',
+        name:'外包',
+        type:'income'
+      },
+      {
+        icon:'icon-gaofei',
+        name:'稿费',
+        type:'income'
+      },
+      {
+        icon:'icon-qita',
+        name:'其他',
+        type:'income'
+      },
+    ]
   })
 
   return {

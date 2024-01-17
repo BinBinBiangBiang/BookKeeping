@@ -6,26 +6,31 @@
         <div class="function-income" @click="cost" :class="{ 'bottom': isIncomeSelected }">收入</div>
       </div>
     </div>
-    <AccountPay/>
+    <AccountPay v-if="isPayOrIncome"/>
+    <AccountInCome v-else/>
   </div>
 </template>
 
 <script lang="ts" setup>
 import {ref} from 'vue'
 import AccountPay from './AccountPay.vue'
+import AccountInCome from './AccountIncome.vue'
 
 const isPaySelected = ref(true)
 const isIncomeSelected = ref(false)
+const isPayOrIncome = ref(true)
 
 const pay = ()=>{
   isPaySelected.value = true
   isIncomeSelected.value = false
+  isPayOrIncome.value = true
 }
 
 
 const cost = ()=>{
   isIncomeSelected.value = true
   isPaySelected.value = false
+  isPayOrIncome.value = false
 }
 </script>
 
@@ -36,7 +41,7 @@ const cost = ()=>{
     top: 0;
     width: 100vw;
     height: 2rem;
-    background: #9ce124;
+    background: yellow;
     display: flex;
     justify-content: center;
     align-items: center;
