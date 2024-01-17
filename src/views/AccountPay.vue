@@ -18,6 +18,8 @@ const iconCostList = useIconfontStore()
 <style lang="less" scoped>
 .icon-cost{
   height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
   // width: 100vw;
   display: flex;
   padding-left:0.7rem;

@@ -124,6 +124,16 @@ export const useIconfontStore = defineStore('iconfont',()=>{
         icon:'icon-kuaidi',
         name:'快递',
         type:'cost'
+      },
+      {
+        icon:'icon-qinyou',
+        name:'亲友',
+        type:'cost'
+      },
+      {
+        icon:'icon-kuaidi',
+        name:'快递',
+        type:'cost'
       }
     ],
     iconIncome:[]
