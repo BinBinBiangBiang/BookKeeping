@@ -53,11 +53,11 @@ const toMy = () => {
 <style lang="less" scoped>
 .footer{
     position: fixed;
-    bottom: 1px;
+    bottom: 0.04rem;
     display: flex;
     width: 100%;
-    padding: 5px 5px;
-    border-top: 1px solid rgb(178, 164, 164);
+    padding: 0.2rem 0.1rem;
+    border-top: 0.04rem solid rgb(178, 164, 164);
     .footer-item{
       flex: 1;
       display: flex;
