@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     My
   </div>
 </template>
@@ -9,5 +9,7 @@
 </script>
 
 <style lang="less" scoped>
-
+.container{
+  height: 100vh;
+}
 </style>

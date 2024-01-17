@@ -5,12 +5,14 @@
         <router-view></router-view>
       <!-- </Transition> -->
     </div>
-    <Footer/>
   </div>
+  <Footer/>
+
 </template>
 
 <script lang="ts" setup>
 import Footer from '@/components/Footer.vue'
+
 </script>
 
 <style lang="less" scoped>
@@ -26,4 +28,5 @@ import Footer from '@/components/Footer.vue'
   transform: translateX(10px);
   opacity: 0;
 }
+
 </style>

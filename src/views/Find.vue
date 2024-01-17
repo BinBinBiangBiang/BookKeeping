@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     发现
   </div>
 </template>
@@ -8,4 +8,8 @@
 
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.container {
+  height: 100vh;
+}
+</style>

@@ -52,12 +52,13 @@ const toMy = () => {
 
 <style lang="less" scoped>
 .footer{
-    position: fixed;
-    bottom: 0.04rem;
+    position: sticky;
+    bottom: 0.3rem;
     display: flex;
     width: 100%;
     padding: 0.2rem 0.1rem;
     border-top: 0.04rem solid rgb(178, 164, 164);
+    z-index: 1000; /* 设置一个足够高的 z-index */
     .footer-item{
       flex: 1;
       display: flex;

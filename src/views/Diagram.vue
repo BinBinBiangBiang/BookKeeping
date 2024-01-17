@@ -1,14 +1,15 @@
 <template>
-  <div>
-    <choose-time/>
+  <div class="container">
+    图表
   </div>
 </template>
 
 <script lang="ts" setup>
-import ChooseTime from '@/components/ChooseTime.vue'
 
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="less" scoped>
+.container{
+  height: 100vh;
+}
 </style>

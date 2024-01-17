@@ -37,7 +37,9 @@ const cost = ()=>{
 <style lang="less" scoped>
 .container {
   .header {
-    position: fixed;
+    // 使用 position: sticky;，这样在页面滚动时元素会保持在视图的顶部，而不需要使用 position: fixed;
+    // 使用position: fixed; 在页面初次加载时可能会有一些渲染的延迟。这可能导致元素一开始不会立即跳到头部，而是在稍后的某个时刻才跳到正确的位置。
+    position: sticky;
     top: 0;
     width: 100vw;
     height: 2rem;
@@ -45,6 +47,7 @@ const cost = ()=>{
     display: flex;
     justify-content: center;
     align-items: center;
+    // overflow: auto;
     .function {
       display: flex;
       font-size: 0.9rem;

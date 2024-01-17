@@ -27,7 +27,6 @@ const onCost = (index:number) => {
 
 <style lang="less" scoped>
 .icon-cost {
-  margin-top: 2rem;
   height: 100vh;
   max-height: 100vh;
   overflow-y: auto;

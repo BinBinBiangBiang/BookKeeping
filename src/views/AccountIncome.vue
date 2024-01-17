@@ -26,7 +26,6 @@ const onIncome = (index:number) => {
 
 <style lang="less" scoped>
 .icon-income {
-  margin-top: 2rem;
   height: 100vh;
   max-height: 100vh;
   align-content: flex-start;
@@ -42,7 +41,7 @@ const onIncome = (index:number) => {
   .icon-income-list {
     margin: 0.2rem 0.5rem;
     width: 2.5rem;
-    height: 3.8rem;
+    height: 3.9rem;
 
     // 动态添加的类名
     .selected {
