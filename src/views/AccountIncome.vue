@@ -6,12 +6,16 @@
       <span class="icon-income-name">{{ icon.name }}</span>
     </div>
   </div>
+  
 </template>
 
 <script lang="ts" setup>
 import Iconfont from '@/components/Iconfont.vue';
 import { useIconfontStore } from '@/store/iconfont'
 import { ref } from 'vue'
+
+
+
 
 const iconIncomeList = useIconfontStore()
 // 将 selectedIndex 的类型设为 ref<number | null>，表示它可以是数字或空。这样在点击事件中，它的值可以被设置为 number 类型。
@@ -20,6 +24,7 @@ const selectedIndex = ref<number | null>(null);
 const onIncome = (index:number) => {
   selectedIndex.value = index;
   console.log(iconIncomeList.iconStore.iconIncome[index].name);
+  show.value = true;
 }
 
 </script>
