@@ -1,5 +1,5 @@
 <template>
-  <button @click="toggleShow">点击</button>
+  <!-- <button @click="toggleShow">点击</button> -->
   <div class="container" v-if="show">
     <!-- 将 van-number-keyboard 移动到这里，并设置 v-show 控制显示与隐藏 -->
     <div class="header">
@@ -26,17 +26,23 @@
 import { ref } from 'vue';
 import { showToast } from 'vant';
 
-const show = ref(false);
+const emit = defineEmits(['isShow']);
+
+
+
+const show = ref(true);
 const value = ref('');
 const text = ref('');
 
-const toggleShow = () => {
-  show.value = !show.value;
-};
+// const toggleShow = () => {
+//   show.value = !show.value;
+// };
 
 const onInput = (value: string) => {
   console.log(value);
 };
+
+emit('isShow',show.value);
 
 
 const onConfirm = () => {
@@ -46,6 +52,7 @@ const onConfirm = () => {
   } else {
     console.log(value.value);
     show.value = false
+    emit('isShow',show.value);
   }
 };
 
@@ -54,12 +61,14 @@ const isValidAmount = (amount: string): boolean => {
   const regex = /^\d+(\.\d{1,2})?$/; // 正则表达式，判断是否为合法金额（最多两位小数）
   return regex.test(amount);
 };
+
+// emits('isShow',ref(show.value))
 </script>
 
 <style lang="less" scoped>
 .container {
   position: fixed;
-  bottom: 9.5rem;
+  bottom: 9rem;
   width: 100vw;
   border-top: 1px solid #c9c4c4;
   .header {
