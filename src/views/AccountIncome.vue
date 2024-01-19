@@ -1,13 +1,14 @@
 <template>
-  <div class="icon-income">
-    <div class="icon-income-list " v-for="(icon, index) in iconIncomeList.iconStore.iconIncome" :key="icon.icon"
-       @click="onIncome(index)">
-      <Iconfont :iconFontProps="icon.icon" :class="{ 'selected': selectedIndex === index }"/>
-      <span class="icon-income-name">{{ icon.name }}</span>
+  <div>
+      <div class="icon-income">
+      <div class="icon-income-list " v-for="(icon, index) in iconIncomeList.iconStore.iconIncome" :key="icon.icon"
+        @click="onIncome(index)">
+        <Iconfont :iconFontProps="icon.icon" :class="{ 'selected': selectedIndex === index }"/>
+        <span class="icon-income-name">{{ icon.name }}</span>
+      </div>
     </div>
     <Calculate @isShow="showValue" v-if="show"/>
   </div>
-  
 </template>
 
 <script lang="ts" setup>
@@ -49,10 +50,10 @@ const onIncome = (index:number) => {
   -webkit-overflow-scrolling: touch;
   // width: 100vw;
   display: flex;
-  padding-left: 0.7rem;
-  padding-right: 0.7rem;
+  margin-left: 0.7rem;
+  margin-right: 0.7rem;
   flex-wrap: wrap;
-  overflow: auto;
+  // overflow: auto;
   .icon-income-list {
     margin: 0.2rem 0.5rem;
     width: 2.5rem;

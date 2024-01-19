@@ -76,6 +76,7 @@ const isValidAmount = (amount: string): boolean => {
     flex-direction: column;
     padding: 0.35rem;
     background-color: #fff; /* 为 header 添加背景颜色，使其更明显 */
+    // border-top: 1px solid #c9c4c4;
     .sum {
       font-size: 0.78rem;
       font-weight: bold;

@@ -1,12 +1,15 @@
 <template>
-  <div class="icon-cost">
-    <div class="icon-cost-list" v-for="(icon, index) in iconCostList.iconStore.iconCost" :key="icon.icon"
-       @click="onCost(index)">
-      <Iconfont :iconFontProps="icon.icon" :class="{ 'selected': selectedIndex === index }"/>
-      <span class="icon-cost-name">{{ icon.name }}</span>
-    </div>
-    <Calculate @isShow="showValue" v-if="show"/>
+  <div>
+      <div class="icon-cost">
+        <div class="icon-cost-list" v-for="(icon, index) in iconCostList.iconStore.iconCost" :key="icon.icon"
+          @click="onCost(index)">
+          <Iconfont :iconFontProps="icon.icon" :class="{ 'selected': selectedIndex === index }"/>
+          <span class="icon-cost-name">{{ icon.name }}</span>
+        </div>
+      </div>
+      <Calculate @isShow="showValue" v-if="show"/>
   </div>
+  
 </template>
 
 <script lang="ts" setup>

@@ -11,7 +11,7 @@
 </template>
 
 <style scoped>
-@import url('//at.alicdn.com/t/c/font_4403701_he1f22164b.css');
+@import url('//at.alicdn.com/t/c/font_4403701_adejw22vco4.css');
 
 .move-enter-active,.move-leave-active{
    /* 设置页面跳转动画： ease-out 淡出 */

@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="container">
     <div class="main">
       <!-- <Transition name="move"> -->
         <router-view></router-view>
       <!-- </Transition> -->
     </div>
+    <Footer/>
   </div>
-  <Footer/>
 
 </template>
 
@@ -29,4 +29,7 @@ import Footer from '@/components/Footer.vue'
   opacity: 0;
 }
 
+.container{
+  height: 100vh;
+}
 </style>
