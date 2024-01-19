@@ -97,6 +97,22 @@ const routes:RouteRecordRaw[] =[
     meta:{  
       title:'智能助手'
     }
+  },
+  {
+    path:'/vip',
+    name:'vip',
+    component: () => import('@/views/Vip.vue'),
+    meta:{  
+      title:'Vip'
+    }
+  },
+  {
+    path:'/noVip',
+    name:'noVip',
+    component: () => import('@/views/noVip.vue'),
+    meta:{  
+      title:'Vip充值'
+    }
   }
 ]
 
