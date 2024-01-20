@@ -158,11 +158,11 @@ const onTabRefund = () => {
 
 <style lang="less" scoped>
 .container {
-  height: 100vh;
+  // height: 100vh;
   .main {
-    height: 100%;
-    overflow: auto;
-
+    // height: 100%;
+    // overflow: auto;
+    box-sizing: border-box;
     .header {
       height: 7rem;
       position: fixed;

@@ -1,7 +1,6 @@
 <template>
   <!-- <button @click="toggleShow">点击</button> -->
   <div class="container" v-if="show">
-    <!-- 将 van-number-keyboard 移动到这里，并设置 v-show 控制显示与隐藏 -->
     <div class="header">
       <div class="sum">金额：{{ value }}</div>
       <div class="content">
@@ -14,7 +13,6 @@
       extra-key="."
       close-button-text="完成"
       blur-on-confirm="true"
-      @input="onInput"
       :transition="true"
       @close="onConfirm"
       v-model="value"
@@ -25,6 +23,15 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { showToast } from 'vant';
+import { useRecordsStore } from '@/store/records'
+
+const store =defineProps({
+  iconTypeIndex:{
+    type:Number,
+  }
+})
+
+const recordsStore = useRecordsStore()
 
 const emit = defineEmits(['isShow']);
 
@@ -34,15 +41,14 @@ const show = ref(true);
 const value = ref('');
 const text = ref('');
 
+
 // const toggleShow = () => {
 //   show.value = !show.value;
 // };
 
-const onInput = (value: string) => {
-  console.log(value);
-};
-
-emit('isShow',show.value);
+// const onInput = (value: string) => {
+//   console.log(value);
+// };
 
 
 const onConfirm = () => {
@@ -50,11 +56,26 @@ const onConfirm = () => {
     showToast('金额不合法');
     // 这里可以添加其他处理逻辑
   } else {
-    console.log(value.value);
     show.value = false
     emit('isShow',show.value);
+    console.log(value.value);
+    console.log(text.value);
+    console.log(store.iconTypeIndex);
+
+    recordsStore.costRecordsList.push(
+      {
+        iconTypeIndex: store.iconTypeIndex,
+        value: value.value,
+        text: text.value,
+      }
+    )
+
+    console.log(recordsStore.costRecordsList);
+    
   }
 };
+
+
 
 // 判断金额是否合法
 const isValidAmount = (amount: string): boolean => {
@@ -81,6 +102,12 @@ const isValidAmount = (amount: string): boolean => {
       font-size: 0.78rem;
       font-weight: bold;
       margin-bottom: 0.16rem;
+    }
+    .content{
+      .input-field{
+        margin-bottom: 1.2rem;
+        font-style:inherit;
+      }
     }
   }
 }

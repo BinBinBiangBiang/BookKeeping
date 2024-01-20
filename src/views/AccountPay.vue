@@ -7,7 +7,7 @@
           <span class="icon-cost-name">{{ icon.name }}</span>
         </div>
       </div>
-      <Calculate @isShow="showValue" v-if="show"/>
+      <Calculate @isShow="getShowValue" :iconTypeIndex="iconTypeIndex" v-if="show"/>
   </div>
   
 </template>
@@ -19,10 +19,13 @@ import { useIconfontStore } from '@/store/iconfont'
 import { ref } from 'vue'
 
 const show = ref(false)  
+const iconTypeIndex = ref()  // 类型
 
-const showValue = (val: boolean) =>{
+const getShowValue = (val: boolean) =>{
   show.value = val;
 }
+
+  
 
 const iconCostList = useIconfontStore()
 // 将 selectedIndex 的类型设为 ref<number | null>，表示它可以是数字或空。这样在点击事件中，它的值可以被设置为 number 类型。
@@ -30,9 +33,11 @@ const selectedIndex = ref<number | null>(null);
 
 const onCost = (index:number) => {
   selectedIndex.value = index;
-  console.log(iconCostList.iconStore.iconCost[index].name);
+  // console.log(iconCostList.iconStore.iconCost[index].name);
+  iconTypeIndex.value = index
   show.value = true;
 }
+
 
 </script>
 

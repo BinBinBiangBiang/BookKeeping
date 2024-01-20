@@ -1,12 +1,12 @@
 <template>
   <div>
     账单
-    <Calculate/>
+    <Accounting/>
   </div>
 </template>
 
 <script lang="ts" setup>
-import Calculate from '@/components/Calculate.vue';
+import Accounting from '@/components/Accounting.vue'
 </script>
 
 <style lang="less" scoped>
