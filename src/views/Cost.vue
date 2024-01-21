@@ -41,9 +41,7 @@
         </div>
       </div>
       <div class="content">
-        <van-list v-model:loading="state.loading" :finished="state.finished" finished-text="没有更多了" @load="onLoad">
-          <van-cell v-for="item in list" :key="item.id" :title="item.title" />
-        </van-list>
+        
       </div>
     </div>
     <div v-if="state.showChooseTime">
@@ -74,20 +72,7 @@ const state = reactive({
   showChooseTime:true
 })
 
-const list = [
-  {
-    id: 1,
-    title: '吃饭',
-    price: '100',
-    type: '支出',
-  },
-  {
-    id: 2,
-    title: '吃饭',
-    price: '50',
-    type: '支出',
-  }
-]
+
 
 // const chooseTime = () => {
 //   console.log();
@@ -103,28 +88,6 @@ const handleDateSelected = (date:DateSelection):void => {
   // 更新其他需要的显示
 };
 
-const onLoad = () => {
-  // 异步更新数据
-  // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-  // setTimeout(() => {
-  for (let i = 0; i < 10; i++) {
-    list.push({
-      id: 3,
-      title: '吃饭',
-      price: '100',
-      type: '支出',
-    });
-  }
-
-  // 加载状态结束
-  state.loading = false;
-
-  // 数据全部加载完成
-  if (list.length >= 2) {
-    state.finished = true;
-  }
-  // }, 1000);
-};
 
 const goChat = () => {
   router.push('/chat')
