@@ -1,15 +1,16 @@
 import { createApp } from 'vue'
 import 'vant/lib/index.css';
 import '@/assets/style/css/reset.css';
-import '@/config/rem.js'
+import '@/config/rem.ts'
 import Router from './router';
 import { createPinia } from 'pinia';
-import { Button, List, PickerGroup, Popup, DatePicker, Icon, NumberKeyboard, Field, CellGroup, Toast,Image as VanImage,Swipe, SwipeItem  } from 'vant';
+import { Form, Button, List, PickerGroup, Popup, DatePicker, Icon, NumberKeyboard, Field, CellGroup, Toast,Image as VanImage,Swipe, SwipeItem  } from 'vant';
 import App from './App.vue'
 
 const app = createApp(App)
 const pinia = createPinia()
 
+app.use(Form)
 app.use(Button)
 app.use(List)
 app.use(PickerGroup)

@@ -12,16 +12,16 @@ export const useUserStore = defineStore('user', () => {
     }
   ])
 
-  const chargeVip = (i) => {
+  const chargeVip = (i:number) => {
     user[i].vip = true;
     user[i].vipName = 'Vip用户'
   }
 
-  const addMoney = (i,money: number) => {
+  const addMoney = (i:number,money: number) => {
     user[i].money += money;
   }
 
-  const decreaseMoney = (i) => {
+  const decreaseMoney = (i:number) => {
     user[i].money -= 10;
   }
 

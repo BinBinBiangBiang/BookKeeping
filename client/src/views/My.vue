@@ -10,9 +10,9 @@
           src="https://gd-hbimg.huaban.com/4403e200788d9bdbd929452c4a810e6038e0dbf0ba85-4r7oTD_fw658"
           />
         </div>
-        <div class="header-nickname">{{userStore.user[i].nickname}}</div>
+        <div class="header-nickname">{{userInfo.nickname}}</div>
         <div class="header-vip">
-          <div class="novip-icon"><i class="iconfont icon-vip-copy" :class="{'Vip':userStore.user[i].vip}"></i></div>
+          <div class="novip-icon"><i class="iconfont icon-vip-copy" :class="{'Vip':userInfo.isVip}"></i></div>
         </div>
       </div>
     </div>
@@ -23,7 +23,7 @@
           <div><i class="iconfont icon-vip"></i></div>
         </template>
         <template #text>
-          <div class="text-isVip" v-if="userStore.user[i].vip">
+          <div class="text-isVip" v-if="userInfo.isVip">
             <div>你已经是尊敬的VIP啦</div>
             <div class="text-vip">快去体验VIP权限吧</div>
           </div>
@@ -109,21 +109,23 @@
 <script lang="ts" setup>
 import MyPart from '@/components/MyPart.vue'
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@/store/user.ts'
 
 const router = useRouter()
-const userStore = useUserStore()
 
 // 这里假设我们只有一个用户，用户数组下标为0，先写死，后期加了登录功能后再改
 const i = 0;
 
+const userInfoString = sessionStorage.getItem('userInfo');
+const userInfo = JSON.parse(userInfoString);
+
 
 // 页面跳转
 const onVip = () => {
-  if(userStore.user[i].vip){
+  if(userInfo.isVip){
     router.push('/vip');
   }else{
     router.push('/noVip')
+    // console.log(userInfo);
   }
 }
 </script>

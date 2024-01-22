@@ -6,7 +6,7 @@
         <div class="function-income" @click="cost" :class="{ 'bottom': isIncomeSelected }">收入</div>
       </div>
     </div>
-    <AccountPay v-if="isPayOrIncome"/>
+    <AccountPay v-if="recordsState.isPayOrIncome"/>
     <AccountInCome v-else/>
   </div>
 </template>
@@ -15,22 +15,26 @@
 import {ref} from 'vue'
 import AccountPay from './AccountPay.vue'
 import AccountInCome from './AccountIncome.vue'
+import { useRecordsStore } from '@/store/records'
 
-const isPaySelected = ref(true)
-const isIncomeSelected = ref(false)
-const isPayOrIncome = ref(true)
+const isPaySelected = ref(true)  // 选中的支出
+const isIncomeSelected = ref(false) // 选中的收入
+
+const recordsState = useRecordsStore()
+
+
 
 const pay = ()=>{
   isPaySelected.value = true
   isIncomeSelected.value = false
-  isPayOrIncome.value = true
+  recordsState.isPayOrIncome = true
 }
 
 
 const cost = ()=>{
   isIncomeSelected.value = true
   isPaySelected.value = false
-  isPayOrIncome.value = false
+  recordsState.isPayOrIncome = false
 }
 </script>
 
