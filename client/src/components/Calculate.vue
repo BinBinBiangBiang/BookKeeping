@@ -24,7 +24,10 @@ import axios from '../api'
 
 
 const store = defineProps({
-  iconTypeIndex: {
+  iconCostTypeIndex: {
+    type: Number,
+  },
+  iconIncomeTypeIndex:{
     type: Number,
   }
 })
@@ -67,12 +70,14 @@ const onConfirm = async () => {
       }
     )
 
+    // 合理利用三元表达式选择两种不同的状态
     const res = await axios.post('/account', {
       user_id: userInfo.id,
-      transaction_type: store.iconTypeIndex,
+      transaction_type: recordsStore.isPayOrIncome == true ? 'cost' : 'income',
       amount: value.value,
       note: text.value,
-      transaction_date: date
+      transaction_date: date,
+      iconTypeIndex:store.iconCostTypeIndex === undefined ? store.iconIncomeTypeIndex : store.iconCostTypeIndex
     })
 
     console.log(res);

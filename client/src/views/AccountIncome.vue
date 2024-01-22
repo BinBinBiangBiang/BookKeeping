@@ -7,7 +7,7 @@
         <span class="icon-income-name">{{ icon.name }}</span>
       </div>
     </div>
-    <Calculate @isShow="showValue" v-if="show"/>
+    <Calculate @isShow="showValue" :iconIncomeTypeIndex="selectedIndex" v-if="show"/>
   </div>
 </template>
 

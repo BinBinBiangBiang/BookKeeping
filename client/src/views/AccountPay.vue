@@ -7,7 +7,7 @@
           <span class="icon-cost-name">{{ icon.name }}</span>
         </div>
       </div>
-      <Calculate @isShow="getShowValue" :iconTypeIndex="iconTypeIndex" v-if="show"/>
+      <Calculate @isShow="getShowValue" :iconCostTypeIndex="iconTypeIndex" v-if="show"/>
   </div>
   
 </template>

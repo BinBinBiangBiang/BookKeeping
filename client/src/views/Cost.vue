@@ -54,6 +54,7 @@
 import { useRouter } from 'vue-router';
 import { reactive,ref } from 'vue'
 import ChooseTime from '@/components/ChooseTime.vue'
+import axios from '@/api';
 
 
 const router = useRouter()
@@ -67,12 +68,14 @@ interface DateSelection {
 const state = reactive({
   loading: false,
   finished: false,
-  year:2023,
-  month:12,
+  year:'2023',
+  month:'12',
   showChooseTime:true
 })
 
-
+// 获取用户登录后的信息，这里主要是拿id
+const userInfoString = sessionStorage.getItem('userInfo');
+const userInfo = JSON.parse(userInfoString);
 
 // const chooseTime = () => {
 //   console.log();
@@ -81,10 +84,17 @@ const state = reactive({
 
 const selectedDate = ref({ year: '', month: '' });
 
-const handleDateSelected = (date:DateSelection):void => {
+const handleDateSelected = async(date:DateSelection) => {
   selectedDate.value = { ...date };
-  state.year = Number(selectedDate.value.year);
-  state.month = Number(selectedDate.value.month);
+  state.year = selectedDate.value.year;
+  state.month =selectedDate.value.month;
+  const result = await axios.post('/date', {
+    user_id:userInfo.id,
+    year:state.year,
+    month:state.month
+  })
+  console.log(result);
+  
   // 更新其他需要的显示
 };
 

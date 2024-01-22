@@ -137,4 +137,21 @@ const router = createRouter({
   routes
 })
 
+// 开启路由守卫
+const whitePath = ['/login', '/register'] 
+router.beforeEach((to,from,next) =>{
+  // console.log(to ,from);
+  document.title = to.meta.title;
+  if(!whitePath.includes(to.path)){
+    if(!sessionStorage.getItem('userInfo')){ // 没登录
+      router.push('/login')
+      return
+    }else{
+      next();
+      return;
+    }
+  }
+  next(); // next() 放行
+})
+
 export default router
