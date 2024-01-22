@@ -4,7 +4,7 @@ import '@/assets/style/css/reset.css';
 import '@/config/rem.ts'
 import Router from './router';
 import { createPinia } from 'pinia';
-import { Form, Button, List, PickerGroup, Popup, DatePicker, Icon, NumberKeyboard, Field, CellGroup, Toast,Image as VanImage,Swipe, SwipeItem  } from 'vant';
+import { Form, Button, List, PickerGroup, Popup, DatePicker, Icon, NumberKeyboard, Field, CellGroup, Toast,Image as VanImage,Swipe, SwipeItem,PullRefresh   } from 'vant';
 import App from './App.vue'
 
 const app = createApp(App)
@@ -24,6 +24,7 @@ app.use(Toast)
 app.use(VanImage)
 app.use(Swipe)
 app.use(SwipeItem)
+app.use(PullRefresh)
 
 app.use(pinia)
 app.use(Router)

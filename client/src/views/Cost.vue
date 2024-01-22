@@ -41,7 +41,18 @@
         </div>
       </div>
       <div class="content">
-        
+        <van-pull-refresh
+            v-model="loading"
+            @refresh="onRefresh"
+            success-text="刷新成功"
+            pulling-text="下拉查看上月账单"
+            loosing-text="释放即可刷新"
+            loading-text="加载中.."
+            head-height="65"
+            class="vantRefresh"
+        >
+          <p>刷新次数: {{ count }}</p>
+        </van-pull-refresh>
       </div>
     </div>
     <div v-if="state.showChooseTime">
@@ -54,6 +65,8 @@
 import { useRouter } from 'vue-router';
 import { reactive,ref } from 'vue'
 import ChooseTime from '@/components/ChooseTime.vue'
+import OneRecord from '@/components/OneRecord.vue'
+import { showToast } from 'vant';
 import axios from '@/api';
 
 
@@ -81,6 +94,17 @@ const userInfo = JSON.parse(userInfoString);
 //   console.log();
   
 // }
+
+const count = ref(0);
+const loading = ref(true);
+const onRefresh = () => {
+  setTimeout(() => {
+    showToast('刷新成功');
+    loading.value = false;
+    count.value++;
+  }, 1000);
+};
+
 
 const selectedDate = ref({ year: '', month: '' });
 
@@ -132,16 +156,17 @@ const onTabRefund = () => {
 <style lang="less" scoped>
 .container {
   // height: 100vh;
+  
   .main {
     // height: 100%;
     // overflow: auto;
     box-sizing: border-box;
     .header {
       height: 7rem;
-      position: fixed;
+      // position: fixed;
       top: 0;
       background: rgb(154, 243, 65);
-
+      z-index: 999;
       .header-data {
         display: flex;
         padding-bottom: 0.3rem;
@@ -260,8 +285,13 @@ const onTabRefund = () => {
 
     .content {
       height: 100%;
-      overflow: hidden;
-      padding-top: 7rem;
+      // overflow: hidden;
+      width: 100%;
+      z-index: -1;
+      height: 20rem;
+      .vantRefresh{
+        height: 100%;
+      }
     }
   }
 }
