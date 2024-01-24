@@ -1,15 +1,18 @@
 <template>
   <div class="container">
-    图表
+    图表模块 待开发...
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" >
 
 </script>
 
 <style lang="less" scoped>
-.container{
+.container {
   height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

@@ -35,7 +35,7 @@
         </MyPart>
       </div>
       <div class="part3">
-        <MyPart>
+        <MyPart @click="goBill">
         <template #icon>
           <div><i class="iconfont icon-wodezhangben"></i></div>
         </template>
@@ -43,7 +43,7 @@
           <div>我的账本</div>
         </template>
         </MyPart>
-        <MyPart>
+        <MyPart @click="goFamilyBill">
           <template #icon>
             <div><i class="iconfont icon-property"></i></div>
           </template>
@@ -53,7 +53,7 @@
         </MyPart>
       </div>
       <div class="part4">
-        <MyPart>
+        <MyPart @click="goSet">
         <template #icon>
           <div><i class="iconfont icon-shezhi1"></i></div>
         </template>
@@ -61,7 +61,7 @@
           <div>设置</div>
         </template>
         </MyPart>
-        <MyPart>
+        <MyPart @click="goSecurity">
           <template #icon>
             <div><i class="iconfont icon-zhanghuanquanzhongxin"></i></div>
           </template>
@@ -69,7 +69,7 @@
             <div>账户安全中心</div>
           </template>
         </MyPart>
-        <MyPart>
+        <MyPart @click="goHelp">
           <template #icon>
             <div><i class="iconfont icon-shiyongbangzhu"></i></div>
           </template>
@@ -77,7 +77,7 @@
             <div>使用帮助</div>
           </template>
         </MyPart>
-        <MyPart>
+        <MyPart @click="goSuggestion">
           <template #icon>
             <div><i class="iconfont icon-yijianfankui"></i></div>
           </template>
@@ -85,7 +85,7 @@
             <div>意见反馈</div>
           </template>
         </MyPart>
-        <MyPart>
+        <MyPart @click="goStar">
           <template #icon>
             <div><i class="iconfont icon-icon"></i></div>
           </template>
@@ -93,7 +93,7 @@
             <div>给作者一个赞把^-^</div>
           </template>
         </MyPart>
-        <MyPart>
+        <MyPart @click="goAbout">
           <template #icon>
             <div><i class="iconfont icon-cuowutishi-copy"></i></div>
           </template>
@@ -108,6 +108,7 @@
 
 <script lang="ts" setup>
 import MyPart from '@/components/MyPart.vue'
+import { showToast } from 'vant';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
@@ -116,7 +117,7 @@ const router = useRouter()
 const i = 0;
 
 const userInfoString = sessionStorage.getItem('userInfo');
-const userInfo = JSON.parse(userInfoString);
+const userInfo = userInfoString ? JSON.parse(userInfoString) : null;
 
 
 // 页面跳转
@@ -127,6 +128,39 @@ const onVip = () => {
     router.push('/noVip')
     // console.log(userInfo);
   }
+}
+
+const goAbout = () => {
+  router.push('/aboutSoftWare');
+}
+
+const goBill = () => {
+  router.push('/cost/bill')
+}
+
+const goSet = () => {
+  router.push('/set')
+}
+
+
+const goSecurity = () => {
+  showToast('该模块尚未开发')
+}
+
+const goFamilyBill = () => {
+  showToast('该模块尚未开发')
+}
+
+const goStar = () => {
+  showToast('该模块尚未开发')
+}
+
+const goSuggestion = () => {
+  showToast('该模块尚未开发')
+}
+
+const goHelp = () => {
+  showToast('该模块尚未开发')
 }
 </script>
 

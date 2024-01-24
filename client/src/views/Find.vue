@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    发现
+    发现模块 待开发...
   </div>
 </template>
 
@@ -11,5 +11,8 @@
 <style lang="less" scoped>
 .container {
   height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

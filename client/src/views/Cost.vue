@@ -14,11 +14,11 @@
           <span class="fuhao">|</span>
           <div class="header-data-make">
             <span class="header-data-make-title">收入</span>
-            <span class="header-data-make-value">0.00</span>
+            <span class="header-data-make-value">{{ calculateTotalIncome() }}</span>
           </div>
           <div class="header-data-cost">
             <span class="header-data-cost-title">支出</span>
-            <span class="header-data-cost-value">0.00</span>
+            <span class="header-data-cost-value">{{ calculateTotalExpense() }}</span>
           </div>
         </div>
         <div class="tabs">
@@ -42,16 +42,37 @@
       </div>
       <div class="content">
         <van-pull-refresh
-            v-model="loading"
-            @refresh="onRefresh"
-            success-text="刷新成功"
-            pulling-text="下拉查看上月账单"
-            loosing-text="释放即可刷新"
-            loading-text="加载中.."
-            head-height="65"
-            class="vantRefresh"
+          v-model="loading"
+          @refresh="onRefresh"
+          success-text="刷新成功"
+          pulling-text="下拉查看上月账单"
+          loosing-text="释放即可刷新"
+          loading-text="加载中.."
+          head-height="65"
+          class="vantRefresh"
         >
-          <p>刷新次数: {{ count }}</p>
+          <div class="oneRecord" v-if="state.data.length">
+            <OneRecord v-for="(record, index) in state.data" :key="index">
+              <template #icon>
+                <div class="icon">
+                  <i :class="getIconClass(record)"></i>
+                </div>
+              </template>
+              <template #note>
+                <div>
+                  {{ getNoteText(record) }}
+                </div>
+              </template>
+              <template #value>
+                <div>
+                  {{ getAmountText(record) }}
+                </div>
+              </template>
+            </OneRecord>
+          </div>
+          <div class="record-empty" v-else>
+            您本月没有记账哦...
+          </div>
         </van-pull-refresh>
       </div>
     </div>
@@ -63,11 +84,12 @@
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import { reactive,ref } from 'vue'
+import { reactive,ref,onMounted } from 'vue'
 import ChooseTime from '@/components/ChooseTime.vue'
 import OneRecord from '@/components/OneRecord.vue'
 import { showToast } from 'vant';
 import axios from '@/api';
+import { useIconfontStore } from '@/store/iconfont'
 
 
 const router = useRouter()
@@ -79,47 +101,136 @@ interface DateSelection {
 
 // const list = ref([]);
 const state = reactive({
-  loading: false,
-  finished: false,
-  year:'2023',
-  month:'12',
-  showChooseTime:true
+  year:'2024',
+  month:'1',
+  showChooseTime:true,
+  data:[]
 })
 
 // 获取用户登录后的信息，这里主要是拿id
 const userInfoString = sessionStorage.getItem('userInfo');
-const userInfo = JSON.parse(userInfoString);
+const userInfo = userInfoString ? JSON.parse(userInfoString) : null;
+
+// 向后台获取数据
+onMounted(async() => {
+  const res = await axios.post('/date',{
+    user_id:userInfo.id,
+    year:state.year,
+    month:state.month
+  })
+  state.data = res.data
+  // console.log(state.data);
+})
+
+const iconState = useIconfontStore()
+
+
+// 辅助函数  美化代码，防止html看起来太冗余
+const getIconClass = (record:any) => {
+  const iconStore = iconState.iconStore;
+  const iconType = record.transaction_type === 'cost' ? iconStore.iconCost : iconStore.iconIncome;
+  return 'iconfont ' + iconType[record.iconTypeIndex].icon;
+};
+
+const getNoteText = (record:any) => {
+  return record.note === ''
+    ? (record.transaction_type === 'cost' ? iconState.iconStore.iconCost[record.iconTypeIndex].name : iconState.iconStore.iconIncome[record.iconTypeIndex].name)
+    : record.note;
+};
+
+const getAmountText = (record:any) => {
+  return record.transaction_type === 'cost' ? `-${record.amount}` : `+${record.amount}`;
+};
+
 
 // const chooseTime = () => {
 //   console.log();
   
 // }
 
-const count = ref(0);
 const loading = ref(true);
-const onRefresh = () => {
-  setTimeout(() => {
+const onRefresh = async () => {
+  // 获取前一个月的年月
+  const prevMonth = getPrevMonth(state.year, state.month);
+
+  setTimeout(async () => {
     showToast('刷新成功');
     loading.value = false;
-    count.value++;
+
+    // 更新 state.year 和 state.month
+    // console.log(prevMonth.year, prevMonth.month);
+    
+    state.year = prevMonth.year;
+    state.month = prevMonth.month;
+
+    // 请求前一个月的数据
+    const res = await axios.post('/date',{
+      user_id:userInfo.id,
+      year:state.year,
+      month:state.month
+    })
+    state.data = res.data
   }, 1000);
+};
+
+// 获取前一个月的年月
+const getPrevMonth = (year: string, month: string) => {
+  // 将传入的月份格式化为两位数字
+  const formattedMonth = month.padStart(2, '0');
+
+  let prevYear = year;
+  let prevMonth = (Number(formattedMonth) - 1).toString();
+
+  if (prevMonth === '0') {
+    // 如果是1月，年份减1，月份设为12
+    prevYear = (Number(year) - 1).toString();
+    prevMonth = '12';
+  }
+
+  return { year: prevYear, month: prevMonth };
 };
 
 
 const selectedDate = ref({ year: '', month: '' });
 
-const handleDateSelected = async(date:DateSelection) => {
+const handleDateSelected = async (date: DateSelection) => {
   selectedDate.value = { ...date };
   state.year = selectedDate.value.year;
-  state.month =selectedDate.value.month;
-  const result = await axios.post('/date', {
-    user_id:userInfo.id,
-    year:state.year,
-    month:state.month
-  })
-  console.log(result);
+  state.month = selectedDate.value.month;
   
-  // 更新其他需要的显示
+  const result = await axios.post('/date', {
+    user_id: userInfo.id,
+    year: state.year,
+    month: state.month
+  });
+
+  // 使用 $set 来确保响应式更新
+  // state.data = [];
+  // result.data.forEach((record: any) => {
+  //   // 如果 state.data 是数组，使用 $set
+  //   // Vue.set(state.data, index, record);
+  //   state.data.push(record);
+  // });
+  state.data =result.data
+};
+
+// 计算当月收入和支出的函数
+const calculateTotalIncome = () => {
+  return state.data.reduce((total: number, record: any) => {
+    if (record.transaction_type === 'income') {
+      total += parseFloat(record.amount);
+    }
+    return total;
+  }, 0).toFixed(2);
+};
+
+const calculateTotalExpense = () => {
+  return state.data.reduce((total: number, record: any) => {
+    if (record.transaction_type === 'cost') {
+      total += parseFloat(record.amount);
+    }
+    return total;
+  }, 0).toFixed(2);
 };
 
 
@@ -129,7 +240,7 @@ const goChat = () => {
 
 const childRef = ref<any>();
 
-const changeMonth = () =>{
+const changeMonth = async() =>{
   state.showChooseTime = true;
   childRef.value.show = true;
   childRef.value.showBottom = true;
@@ -288,9 +399,29 @@ const onTabRefund = () => {
       // overflow: hidden;
       width: 100%;
       z-index: -1;
-      height: 20rem;
+      height: 19.4rem;
       .vantRefresh{
         height: 100%;
+        .record-empty{
+          height: 100%;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.8rem;
+          color: #736868;
+        }
+        .icon{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          i{
+            font-size: 0.9rem;
+          }
+          .icon-juejin{
+            font-size: 0.7rem;
+          }
+        }
       }
     }
   }

@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div class="header">
+      <div class="back" @click="goBack">返回</div>
       <div class="function">
         <div class="function-pay" @click="pay" :class="{ 'bottom': isPaySelected }">支出</div>
         <div class="function-income" @click="cost" :class="{ 'bottom': isIncomeSelected }">收入</div>
@@ -16,6 +17,10 @@ import {ref} from 'vue'
 import AccountPay from './AccountPay.vue'
 import AccountInCome from './AccountIncome.vue'
 import { useRecordsStore } from '@/store/records'
+import { useRouter } from 'vue-router';
+
+
+const router = useRouter();
 
 const isPaySelected = ref(true)  // 选中的支出
 const isIncomeSelected = ref(false) // 选中的收入
@@ -36,6 +41,10 @@ const cost = ()=>{
   isPaySelected.value = false
   recordsState.isPayOrIncome = false
 }
+
+const goBack = () =>{
+  router.push('/cost')
+}
 </script>
 
 <style lang="less" scoped>
@@ -52,6 +61,11 @@ const cost = ()=>{
     justify-content: center;
     align-items: center;
     // overflow: auto;
+    .back{
+      position: absolute;
+      left: 0.7rem;
+      font-size: 0.7rem;
+    }
     .function {
       display: flex;
       font-size: 0.9rem;

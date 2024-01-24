@@ -36,21 +36,21 @@ const showBottom = ref(false);
 const emits = defineEmits();
 
 const handleConfirm = () =>{
-  console.log(currentDate.value[0], currentDate.value[1]);
+  // console.log(currentDate.value[0], currentDate.value[1]);
   emits('date-selected', { year: currentDate.value[0], month: currentDate.value[1] }); // 发送自定义事件
   showBottom.value = false;
 }
 
 const handleCancel = () =>{
   // 处理取消按钮点击事件
-  console.log('Cancelled');
+  // console.log('Cancelled');
   // 恢复日期选择器的值
   currentDate.value = [...originalDate];
   showBottom.value = false;
-  console.log(currentDate.value[0], currentDate.value[1]);
+  // console.log(currentDate.value[0], currentDate.value[1]);
 }
 
-console.log(currentDate.value[0], currentDate.value[1]);
+// console.log(currentDate.value[0], currentDate.value[1]);
 
 
 defineExpose({

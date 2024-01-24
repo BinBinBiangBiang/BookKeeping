@@ -1,16 +1,16 @@
 <template>
-  <!-- <button @click="toggleShow">点击</button> -->
-  <div class="container" v-if="show">
-    <div class="header">
-      <div class="sum">金额：{{ value }}</div>
-      <div class="content">
+  <div class="container" v-if="show" @click="onContainerClick" 
+  :style="{ marginBottom: isInputFocused ? '0rem' : '7rem' }">
+    <div class="header" :style="{ marginBottom: isInputFocused ? '0' : '1.2rem' }">
+      <div class="sum" @click="onSumClick">金额：{{ value }}</div>
+      <div class="content" >
         <van-field ref="inputField" v-model="text" label="备注:" placeholder="请输入备注" class="input-field"
-          style="height: 1.5rem;" />
+          style="height: 1.5rem;" @focus="onInputFocus" @blur="onInputBlur"/>
       </div>
     </div>
-    <van-number-keyboard :show="show" theme="custom" extra-key="." close-button-text="完成" blur-on-confirm="true"
-      :transition="true" @close="onConfirm" v-model="value" />
   </div>
+  <van-number-keyboard v-show="!isInputFocused" :show="show" theme="custom" extra-key="." close-button-text="完成"
+      blur-on-confirm="true" :transition="true" @close="onConfirm" v-model="value" />
 </template>
 
 <script lang="ts" setup>
@@ -36,15 +36,49 @@ const recordsStore = useRecordsStore()
 
 const emit = defineEmits(['isShow']);
 
-
-
 const show = ref(true);
 const value = ref('');
 const text = ref('');
+const isInputFocused = ref(false);
+const showKeyboard = ref(true);
+const keyboardValue = ref('');
+
+
+const onInputFocus = () => {
+  isInputFocused.value = true;
+  showKeyboard.value = false;
+};
+
+const onInputBlur = () => {
+  isInputFocused.value = false;
+  keyboardValue.value = value.value;
+};
+
+const onContainerClick = (event:any) => {
+  // 判断点击的位置是否在键盘组件外
+  if (!event.target.closest('.container')) {
+    // 点击键盘外部，隐藏键盘
+    showKeyboard.value = false;
+  }
+};
+
+const onSumClick = () => {
+  // 设置键盘的值为当前的金额值
+  setKeyboardValue();
+  // 展示 van-number-keyboard 组件
+  showKeyboard.value = true;
+};
+
+const setKeyboardValue = () => {
+  value.value = keyboardValue.value;
+};
+
+
+
 
 // 获取到登录之后存在sessionStorage内的信息
-const userInfoString = sessionStorage.getItem('userInfo');
-const userInfo = JSON.parse(userInfoString);
+const userInfoString= sessionStorage.getItem('userInfo');
+const userInfo = userInfoString ? JSON.parse(userInfoString) : null;
 
 
 const onConfirm = async () => {
@@ -60,15 +94,7 @@ const onConfirm = async () => {
 
     const date = getCurrentYearAndMonth();
 
-    recordsStore.RecordsList.push(
-      {
-        iconTypeIndex: store.iconTypeIndex,
-        value: value.value,
-        text: text.value,
-        date: date,
-        type: recordsStore.isPayOrIncome
-      }
-    )
+    
 
     // 合理利用三元表达式选择两种不同的状态
     const res = await axios.post('/account', {
@@ -104,22 +130,22 @@ const isValidAmount = (amount: string): boolean => {
 <style lang="less" scoped>
 .container {
   position: fixed;
-  bottom: 9rem;
+  bottom: 0rem;
+  margin-bottom: 7rem;
   width: 100vw;
   border-top: 1px solid #c9c4c4;
-
   .header {
     display: flex;
     flex-direction: column;
     padding: 0.35rem;
     background-color: #fff;
+    height: 4.5rem;
 
-    /* 为 header 添加背景颜色，使其更明显 */
-    // border-top: 1px solid #c9c4c4;
     .sum {
       font-size: 0.78rem;
       font-weight: bold;
       margin-bottom: 0.16rem;
+      cursor: pointer; // 添加光标样式，表示可点击
     }
 
     .content {

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="icon">><slot name="icon" class="iconfont i1"></slot></div>
+    <div class="icon"><slot name="icon" class="iconfont i1"></slot></div>
     <div class="note"><slot name="note"></slot></div>
     <div class="value"><slot name="value"></slot></div>
   </div>
@@ -10,12 +10,13 @@
 
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .container{
   display: flex;
   padding: 0.2rem 0.1rem;
   border-bottom: 0.04rem solid rgb(242, 238, 238) ;
   align-items: center;
+  height: 2rem;
   .icon{
     background: #d9d7d7;
     width: 1.4rem;

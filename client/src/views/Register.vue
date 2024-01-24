@@ -5,18 +5,34 @@
       <div class="login-wrapper">
         <div class="avatar">
           <img
-            src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F4d40b566-1f0a-4f8d-bc97-c513df8775b3%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1706790621&t=c5435ce26ce51219c2dc1a018c76582d"
+            src="https://pic2.zhimg.com/v2-cf5e2c374ca2344c8f2fb1a3a0043990_r.jpg?source=1940ef5c"
             alt="">
         </div>
         <van-form @submit="onSubmit">
           <van-cell-group inset>
-            <van-field v-model="state.nickname" name="昵称" label="昵称" placeholder="昵称"
+            <van-field ref="usernameInputRef" v-model="state.nickname" name="昵称" label="昵称" placeholder="昵称"
               :rules="[{ required: true, message: '请填写昵称' }]" />
-            <van-field v-model="state.username" name="用户名" label="用户名" placeholder="用户名"
+            <van-field ref="usernameInputRef" v-model="state.username" name="用户名" label="用户名" placeholder="用户名"
               :rules="[{ required: true, message: '请填写用户名' }]" />
-            <van-field v-model="state.password" type="password" name="密码" label="密码" placeholder="密码"
+            <van-field ref="usernameInputRef" v-model="state.password" type="password" name="密码" label="密码" placeholder="密码"
               :rules="[{ required: true, message: '请填写密码' }]" />
+               <!-- 验证码输入框 -->
+            <van-field
+              ref="usernameInputRef"
+              center
+              clearable
+              label="验证码"
+              placeholder="输入验证码"
+              v-model="state.verify"
+            >
+              <!-- 点击刷新验证码 -->
+              <template #button>
+                <!-- 生成验证码图片组件，ref 方便拿到组件内的实例属性 -->
+                <VueImgVerify ref="verifyRef" />
+              </template>
+            </van-field>
           </van-cell-group>
+         
           <div style="margin: 16px;">
             <van-button round block color="red" type="primary" native-type="submit">
               注册
@@ -24,16 +40,17 @@
           </div>
         </van-form>
       </div>
-      <p class="register" @click="login">已有账号？点击登录</p>
+      <p class="register" @click="login" v-show="showBtn">已有账号？点击登录</p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive,ref,nextTick,onMounted,onUnmounted } from 'vue';
 import { useRouter } from 'vue-router'
 import axios from '../api'
-import { showSuccessToast } from 'vant';
+import { showSuccessToast,showFailToast } from 'vant';
+import VueImgVerify from '@/components/VueImgVerify.vue';
 
 const router = useRouter()
 
@@ -41,38 +58,87 @@ const router = useRouter()
 // 注意：reactive函数只能接受对象，不能接受数组
 // 注意：reactive函数返回的对象是响应式的
 
+ // 便于拿到 verifyRef 组件内的实例属性
+const verifyRef = ref<any>(null);
+
 const state = reactive({ // 将对象变成响应式
   nickname: '',
   username: '',
   password: '',
   isVip: 0,
-  userType: "普通用户"
+  userType: "普通用户",
+  verify: "", // 验证码输入框输入的内容
+  imgCode: "", // 生成的验证图片内的文字
 })
 
-const onSubmit = async () => {
-  // 发请求，将state.nickname,state.username,state.password数据传给后端
-  const res = await axios.post('/register', {
-    nickname: state.nickname,
-    username: state.username,
-    password: state.password,
-    isVip: state.isVip,
-    userType: state.userType
-  })
+// 解决部分安卓端输入法键盘会将固定在底部的元素顶上去的问题
+const showBtn = ref(true);
+const clientHeight = ref(document.documentElement.clientHeight);
 
-  showSuccessToast('注册成功！')
+const handleResize = () => {
+  if (clientHeight.value > document.documentElement.clientHeight) {
+    showBtn.value = false;
+  } else {
+    showBtn.value = true;
+  }
+};
 
-  // 1s后跳转到登录页面
-  setTimeout(() => {
-    router.push('/login')
-  }, 1000)
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+});
 
-  // console.log(state.nickname,state.username, state.password)
-}
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
 
-const login = () => {
-  // 跳转到登录页面
+
+
+const login = () =>{
   router.push('/login')
 }
+
+const onSubmit = async () => {
+  // 使用 nextTick 确保组件渲染后再访问 verifyRef
+  await nextTick();
+
+  // 确保 verifyRef 不为 null
+  if (verifyRef.value) {
+    // 生成的图片验证码的文字等于验证码组件生成的验证码
+    state.imgCode = verifyRef.value.imgCode || "";
+    // 如果验证码组件生成的验证码的小写 != 用户输入的验证码的小写，则提示错误
+    if (
+      verifyRef.value.imgCode.toLowerCase() != state.verify.toLowerCase()
+    ) {
+      console.log("verifyRef.value.imgCode", verifyRef.value.imgCode);
+      showFailToast("验证码错误");
+      console.log("Generated Captcha:", verifyRef.value.imgCode.toLowerCase());
+      console.log("User Input Captcha:", state.verify.toLowerCase());
+
+      return;
+    }
+    // 验证码匹配成功，注册=>注册成功
+
+    // 发请求，将state.nickname,state.username,state.password数据传给后端
+    await axios.post('/register', {
+      nickname: state.nickname,
+      username: state.username,
+      password: state.password,
+      isVip: state.isVip,
+      userType: state.userType
+    });
+
+    showSuccessToast('注册成功！');
+
+    // 1s后跳转到登录页面
+    setTimeout(() => {
+      router.push('/login');
+    }, 1000);
+  } else {
+    // 处理 verifyRef 为 null 的情况
+    console.error("verifyRef is null");
+  }
+};
+
 </script>
 
 <style lang="less" scoped>
@@ -94,11 +160,11 @@ const login = () => {
   }
 
   .login-wrapper {
-    width: 12.44rem;
-    height: 15.77rem;
+    width: 13.44rem;
+    height: 16.77rem;
     border: 1px solid rgba(187, 187, 187, 1);
     margin: 0 auto;
-    margin-top: 1.7rem;
+    margin-top: 2.7rem;
     border-radius: 0.3rem;
     box-shadow: 0 0 0.533rem 0 rgba(170, 170, 170, 1);
 

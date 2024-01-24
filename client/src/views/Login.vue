@@ -5,14 +5,14 @@
       <div class="login-wrapper">
         <div class="avatar">
           <img
-            src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F4d40b566-1f0a-4f8d-bc97-c513df8775b3%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1706790621&t=c5435ce26ce51219c2dc1a018c76582d"
+            src="https://pic2.zhimg.com/v2-cf5e2c374ca2344c8f2fb1a3a0043990_r.jpg?source=1940ef5c"
             alt="">
         </div>
         <van-form @submit="onSubmit">
           <van-cell-group inset>
-            <van-field v-model="state.username" name="用户名" label="用户名" placeholder="用户名"
+            <van-field ref="usernameInputRef" v-model="state.username" name="用户名" label="用户名" placeholder="用户名"
               :rules="[{ required: true, message: '请填写用户名' }]" />
-            <van-field v-model="state.password" type="password" name="密码" label="密码" placeholder="密码"
+            <van-field ref="usernameInputRef" v-model="state.password" type="password" name="密码" label="密码" placeholder="密码"
               :rules="[{ required: true, message: '请填写密码' }]" />
           </van-cell-group>
           <div style="margin: 16px;">
@@ -22,18 +22,42 @@
           </div>
         </van-form>
       </div>
-      <p class="register" @click="register">新用户？点击这里注册</p>
+      <p class="register" @click="register" v-show="showBtn">新用户？点击这里注册</p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive,ref,onMounted,onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from '../api/index'
 import {showSuccessToast } from 'vant';
  
 const router = useRouter()
+
+// 解决部分安卓端输入法键盘会将固定在底部的元素顶上去的问题
+const showBtn = ref(true);
+const clientHeight = ref(document.documentElement.clientHeight);
+
+const handleResize = () => {
+  if (clientHeight.value > document.documentElement.clientHeight) {
+    showBtn.value = false;
+  } else {
+    showBtn.value = true;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
+
+
+
+
 
 // 想要一次性将多个变量变成响应式的话，可以用reactive函数
 // 注意：reactive函数只能接受对象，不能接受数组
@@ -43,7 +67,8 @@ const state = reactive({ // 将对象变成响应式
   username: '',
   password: '',
   isVip: false,
-  userType:'普通用户'
+  userType:'普通用户',
+  money:0
 })
 
 const onSubmit = async() => {
@@ -54,7 +79,8 @@ const onSubmit = async() => {
     username: state.username,
     password: state.password,
     isVip: state.isVip,
-    userType: state.userType
+    userType: state.userType,
+    money: state.money
   })
 
   // console.log(res);
@@ -72,6 +98,8 @@ const register = () => {
   // 跳转到注册页面
   router.push('/register')
 }
+
+
 </script>
 
 <style lang="less" scoped>
@@ -92,11 +120,11 @@ const register = () => {
   }
 
   .login-wrapper {
-    width: 12.44rem;
-    height: 15.77rem;
+    width: 11.44rem;
+    height: 14.77rem;
     border: 1px solid rgba(187, 187, 187, 1);
     margin: 0 auto;
-    margin-top: 1.7rem;
+    margin-top: 2.7rem;
     border-radius: 0.3rem;
     box-shadow: 0 0 0.533rem 0 rgba(170, 170, 170, 1);
 

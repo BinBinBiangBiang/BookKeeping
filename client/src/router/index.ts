@@ -1,6 +1,7 @@
 //RouteRecordRaw 是一个 TypeScript 接口，用于描述路由的配置。它包含了路由配置的各种属性，
 // 如 path、name、component、children 等。通过使用 RouteRecordRaw，你可以在开发过程中更早地发现潜在的错误，并获得更好的编辑器支持。
 import { createRouter,createWebHistory,RouteRecordRaw } from "vue-router"
+import { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
 
 
 const routes:RouteRecordRaw[] =[
@@ -129,6 +130,22 @@ const routes:RouteRecordRaw[] =[
     meta:{  
       title:'Vip充值'
     }
+  },
+  {
+    path:'/aboutSoftware',
+    name:'aboutSoftware',
+    component: () => import('@/views/AboutSoftWare.vue'),
+    meta:{  
+      title:'关于我们'
+    }
+  },
+  {
+    path:'/set',
+    name:'set',
+    component: () => import('@/views/Set.vue'),
+    meta:{  
+      title:'设置'
+    }
   }
 ]
 
@@ -138,20 +155,25 @@ const router = createRouter({
 })
 
 // 开启路由守卫
-const whitePath = ['/login', '/register'] 
-router.beforeEach((to,from,next) =>{
-  // console.log(to ,from);
+const whitePath = ['/login', '/register'];
+
+router.beforeEach((to, from: RouteLocationNormalized | undefined, next: NavigationGuardNext) => {
+  console.log(from);
   document.title = to.meta.title;
-  if(!whitePath.includes(to.path)){
-    if(!sessionStorage.getItem('userInfo')){ // 没登录
-      router.push('/login')
-      return
-    }else{
+
+  if (!whitePath.includes(to.path)) {
+    if (!sessionStorage.getItem('userInfo')) {
+      router.push('/login');
+      return;
+    } else {
       next();
       return;
     }
   }
-  next(); // next() 放行
-})
+
+  next(); // 放行
+});
+
+
 
 export default router

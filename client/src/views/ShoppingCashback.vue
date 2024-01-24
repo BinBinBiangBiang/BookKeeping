@@ -1,22 +1,36 @@
 <template>
   <div class="container">
-    <div class="row">
-      <h1 class="text-center">广告位招租...</h1>
+    <div class="back" @click="goBack">返回</div>
+    <div class="content">
+      广告位招租...
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
+
+const goBack =() => {
+  router.push('/cost')
+}
 </script>
 
 <style lang="less" scoped>
-.container {
-  width: 100vw;
-  // line-height: 100vw;
+.container{
   height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  .back{
+    margin-left: 0.2rem;
+    margin-top: 0.2rem;
+  }
+  .content{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 </style>
