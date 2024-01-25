@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="show" @click="onContainerClick" 
-  :style="{ marginBottom: isInputFocused ? '0rem' : '7rem' }">
-    <div class="header" :style="{ marginBottom: isInputFocused ? '0' : '1.2rem' }">
+  :style="{ bottom: isInput2Focused ? '0rem' : '9.5rem' }">
+    <div class="header">
       <div class="sum" @click="onSumClick">金额：{{ value }}</div>
       <div class="content" >
         <van-field ref="inputField" v-model="text" label="备注:" placeholder="请输入备注" class="input-field"
@@ -42,16 +42,19 @@ const text = ref('');
 const isInputFocused = ref(false);
 const showKeyboard = ref(true);
 const keyboardValue = ref('');
+const isInput2Focused = ref(false);
 
 
 const onInputFocus = () => {
   isInputFocused.value = true;
   showKeyboard.value = false;
+  isInput2Focused.value = true;
 };
 
 const onInputBlur = () => {
   isInputFocused.value = false;
   keyboardValue.value = value.value;
+  isInput2Focused.value = false;
 };
 
 const onContainerClick = (event:any) => {
@@ -130,8 +133,8 @@ const isValidAmount = (amount: string): boolean => {
 <style lang="less" scoped>
 .container {
   position: fixed;
-  bottom: 0rem;
-  margin-bottom: 7rem;
+  bottom: 2.5rem;
+  display: block;
   width: 100vw;
   border-top: 1px solid #c9c4c4;
   .header {
@@ -139,8 +142,6 @@ const isValidAmount = (amount: string): boolean => {
     flex-direction: column;
     padding: 0.35rem;
     background-color: #fff;
-    height: 4.5rem;
-
     .sum {
       font-size: 0.78rem;
       font-weight: bold;

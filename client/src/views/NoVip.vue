@@ -56,10 +56,14 @@ const value = ref<string | number>('');
 
 const onConfirm = async () => {
   const amount = parseFloat(value.value as string);
+  if( amount > 100000){
+      showFailToast('余额充值失败，单次充值不能超过100000元哦');
+      return
+    }
 
   if (!isNaN(amount) && amount >= 0) {
     if(Number((parseFloat(money.value) + amount).toFixed(2)) > 1000000000000){
-      showFailToast('余额充值失败，余额不能超过1000000000000元哦');
+      showFailToast('余额充值失败，总余额不能超过1000000000000元哦');
       return
     }
     // 更新前端显示的余额
